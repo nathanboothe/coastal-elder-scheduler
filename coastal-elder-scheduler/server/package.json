@@ -1,0 +1,17 @@
+{
+  "name": "elder-scheduling-server",
+  "version": "1.0.0",
+  "description": "Backend chokepoint for the Elder Scheduling tool. Mediates all reads/writes to Airtable and sends notification email via Microsoft Graph.",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

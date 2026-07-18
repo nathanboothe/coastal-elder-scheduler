@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: elder-scheduling
+    runtime: node
+    plan: free
+    buildCommand: cd client && npm install && npm run build && cd ../server && npm install
+    startCommand: node server/server.js
+    envVars:
+      - key: AIRTABLE_API_KEY
+        sync: false
+      - key: AIRTABLE_BASE_ID
+        value: app3N5PBKrcbX0kBu
+      - key: GRAPH_TENANT_ID
+        sync: false
+      - key: GRAPH_CLIENT_ID
+        sync: false
+      - key: GRAPH_CLIENT_SECRET
+        sync: false
+      - key: GRAPH_SEND_AS_MAILBOX
+        value: scheduling@gocoastal.org
+      - key: OME_EMAIL
+        value: engagement@gocoastal.org
+# "sync: false" values are secrets - Render will prompt you to enter them
+# in the dashboard rather than storing them in this file, which is safe to
+# commit to a repo per the framework's "secrets never touch version control" rule.
