@@ -1,0 +1,263 @@
+:root {
+  color-scheme: light;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --coastal-blue: #407da8;
+  --coastal-black: #000000;
+}
+
+body {
+  margin: 0;
+  background: #ffffff;
+  color: #1a1a1a;
+}
+
+.app-shell {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+}
+
+.logo-img {
+  display: block;
+  height: 48px;
+  width: auto;
+  border-radius: 6px;
+  margin-bottom: 1.25rem;
+}
+
+.wizard h1 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin-bottom: 1.5rem;
+}
+
+.wizard h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin-bottom: 1rem;
+}
+
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 1.5rem;
+}
+
+.crumb {
+  font-size: 13px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #ececea;
+  color: #6b6b68;
+}
+
+.crumb.done {
+  background: var(--coastal-blue);
+  color: white;
+}
+
+.option-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 8px;
+}
+
+.option-grid.campus-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 480px) {
+  .option-grid.campus-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.option-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  min-width: 0;
+  padding: 12px 14px;
+  border: 2px solid var(--coastal-black);
+  border-radius: 999px;
+  background: white;
+  color: var(--coastal-black);
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  overflow-wrap: break-word;
+}
+
+.option-btn:hover {
+  background: var(--coastal-black);
+  color: white;
+}
+
+.member-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 420px;
+}
+
+.member-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  color: #4a4a48;
+}
+
+.member-form input,
+.member-form textarea,
+.member-form select {
+  padding: 8px 10px;
+  border: 1px solid #d8d8d5;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.member-form button {
+  align-self: flex-start;
+  padding: 10px 22px;
+  border: 2px solid var(--coastal-blue);
+  border-radius: 999px;
+  background: var(--coastal-blue);
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+
+.member-form button:hover {
+  background: white;
+  color: var(--coastal-blue);
+}
+
+.confirmation {
+  background: var(--coastal-blue);
+  color: white;
+  border-radius: 6px;
+  padding: 1.25rem;
+}
+
+.confirmation .empty-message {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.error-message {
+  color: #b91c1c;
+  font-size: 14px;
+  margin-bottom: 1rem;
+}
+
+.loading-message {
+  color: #6b6b68;
+  font-size: 14px;
+}
+
+.empty-message {
+  color: #6b6b68;
+  font-size: 14px;
+}
+
+.restart-btn {
+  margin-top: 2rem;
+  background: none;
+  border: none;
+  color: #6b6b68;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.elder-select-label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  color: #4a4a48;
+  max-width: 360px;
+  margin-bottom: 1.5rem;
+}
+
+.elder-select {
+  padding: 8px 10px;
+  border: 1px solid #d8d8d5;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.manager-section {
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e5e5e2;
+}
+
+.manager-section h2 {
+  font-size: 1.05rem;
+  margin-bottom: 0.75rem;
+}
+
+.manager-section h3 {
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin: 0 0 4px;
+  text-transform: none;
+}
+
+.manager-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f0ee;
+  font-size: 13px;
+}
+
+.delete-btn {
+  border: none;
+  background: none;
+  color: #b91c1c;
+  cursor: pointer;
+  font-size: 12px;
+  text-decoration: underline;
+  white-space: nowrap;
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 6px 0 14px;
+}
+
+.toggle-chip {
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--coastal-blue);
+  background: var(--coastal-blue);
+  color: white;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.toggle-chip.toggle-chip-active {
+  background: white;
+  border-color: var(--coastal-blue);
+  color: var(--coastal-blue);
+}
