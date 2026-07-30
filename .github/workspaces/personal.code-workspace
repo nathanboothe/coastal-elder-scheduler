@@ -1,0 +1,35 @@
+{
+  "folders": [
+    {
+      "path": "../../nexus"
+    },
+    {
+      "path": "../../genealogy-document-parser"
+    },
+    {
+      "path": "../../custom-projects"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/.git": true,
+      "**/.DS_Store": true
+    },
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "projectManager.git.baseFolders": [
+      "../../"
+    ]
+  },
+  "extensions": {
+    "recommendations": [
+      "eamodio.gitlens",
+      "github.vscode-github-actions",
+      "github.vscode-pull-request-github",
+      "ms-python.python",
+      "ms-vscode.powershell",
+      "dbaeumer.vscode-eslint",
+      "esbenp.prettier-vscode"
+    ]
+  }
+}

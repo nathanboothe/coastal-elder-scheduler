@@ -1,0 +1,20 @@
+{
+  "folders": [
+    {
+      "path": "../../client-projects"
+    }
+  ],
+  "settings": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "extensions": {
+    "recommendations": [
+      "eamodio.gitlens",
+      "github.vscode-pull-request-github",
+      "ms-python.python",
+      "ms-vscode.powershell",
+      "esbenp.prettier-vscode"
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "folders": [
+    {
+      "path": "../../stem-kits"
+    }
+  ],
+  "settings": {
+    "editor.formatOnSave": false
+  },
+  "extensions": {
+    "recommendations": [
+      "eamodio.gitlens",
+      "github.vscode-pull-request-github",
+      "ms-vscode.powershell"
+    ]
+  }
+}
