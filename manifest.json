@@ -1,0 +1,37 @@
+{
+  "alwaysCopy": [
+    { "source": "editorconfig/.editorconfig", "dest": ".editorconfig" },
+    { "source": "hooks/.pre-commit-config.yaml", "dest": ".pre-commit-config.yaml" }
+  ],
+  "ecosystems": {
+    "powershell": {
+      "detectPatterns": ["*.ps1", "*.psm1", "*.psd1"],
+      "files": [
+        { "source": "lint/powershell/PSScriptAnalyzerSettings.psd1", "dest": "PSScriptAnalyzerSettings.psd1" },
+        { "source": "github-workflows/powershell-ci.yml", "dest": ".github/workflows/powershell-ci.yml" }
+      ]
+    },
+    "python": {
+      "detectPatterns": ["pyproject.toml", "requirements.txt", "*.py"],
+      "files": [
+        { "source": "lint/python/ruff.toml", "dest": "ruff.toml" },
+        { "source": "github-workflows/python-ci.yml", "dest": ".github/workflows/python-ci.yml" }
+      ]
+    },
+    "dotnet": {
+      "detectPatterns": ["*.csproj", "*.sln"],
+      "files": [
+        { "source": "lint/dotnet/Directory.Build.props", "dest": "Directory.Build.props" },
+        { "source": "github-workflows/dotnet-ci.yml", "dest": ".github/workflows/dotnet-ci.yml" }
+      ]
+    },
+    "node": {
+      "detectPatterns": ["package.json"],
+      "files": [
+        { "source": "lint/js/eslint.config.js", "dest": "eslint.config.js" },
+        { "source": "lint/js/.prettierrc.json", "dest": ".prettierrc.json" },
+        { "source": "github-workflows/node-ci.yml", "dest": ".github/workflows/node-ci.yml" }
+      ]
+    }
+  }
+}
