@@ -1,0 +1,58 @@
+# Requires: pip install pre-commit (or pipx install pre-commit), then
+# `pre-commit install` once per repo. Hooks no-op on repos with no matching
+# files, so this is safe to copy into every repo regardless of language mix.
+repos:
+  # --- Python ---
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.0
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+  # --- JS / TS / JSON / Markdown / YAML formatting ---
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v4.0.0-alpha.8
+    hooks:
+      - id: prettier
+        types_or: [javascript, jsx, ts, tsx, json, yaml, markdown]
+
+  # --- JS / TS linting ---
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v9.15.0
+    hooks:
+      - id: eslint
+        files: \.[jt]sx?$
+        additional_dependencies:
+          - eslint@9.15.0
+          - "@eslint/js@9.15.0"
+
+  # --- PowerShell (local hook — PSScriptAnalyzer has no official mirror) ---
+  - repo: local
+    hooks:
+      - id: psscriptanalyzer
+        name: PSScriptAnalyzer
+        language: system
+        entry: pwsh -NoProfile -Command "Invoke-ScriptAnalyzer -Path . -Recurse -Settings ./PSScriptAnalyzerSettings.psd1 -EnableExit"
+        files: \.(ps1|psm1|psd1)$
+        pass_filenames: false
+
+  # --- .NET (local hook — dotnet format reads .editorconfig automatically) ---
+  - repo: local
+    hooks:
+      - id: dotnet-format
+        name: dotnet format
+        language: system
+        entry: dotnet format --verify-no-changes
+        files: \.cs$
+        pass_filenames: false
+
+  # --- Generic hygiene ---
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: [--maxkb=5000]
