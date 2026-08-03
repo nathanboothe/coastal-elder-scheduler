@@ -37,11 +37,19 @@ module.exports = {
     // The shared mailbox that sends confirmation emails. Placeholder until
     // the real M365 admin creates/confirms the actual shared mailbox address.
     sendAsMailbox: process.env.GRAPH_SEND_AS_MAILBOX || 'scheduling@gocoastal.org',
-    // The M365/Entra group whose membership defines who's an elder, for the
-    // manual "Refresh from M365" sync on the admin screen. During the demo
-    // period this lives in TechFoundry360's tenant; when this moves to
-    // Coastal's own tenant, only the tenant/client env vars need to change.
-    elderGroupName: process.env.GRAPH_ELDER_GROUP_NAME || 'ElderConnect',
+    // The M365/Entra mail-enabled security groups whose COMBINED membership
+    // defines who's an elder, for the manual "Refresh from M365" sync on the
+    // admin screen. Coastal splits elders across three groups by elder type
+    // ("Elder Group 1/2/3") — the app treats all three identically and just
+    // merges their membership; the type distinction itself isn't modeled
+    // anywhere in the app. During the demo period this lives in
+    // TechFoundry360's tenant; when this moves to Coastal's own tenant, only
+    // the tenant/client env vars need to change.
+    elderGroupNames: [
+      process.env.GRAPH_ELDER_GROUP_NAME_1 || 'Elder Group 1',
+      process.env.GRAPH_ELDER_GROUP_NAME_2 || 'Elder Group 2',
+      process.env.GRAPH_ELDER_GROUP_NAME_3 || 'Elder Group 3',
+    ],
   },
 
   // --- Notification recipients ---

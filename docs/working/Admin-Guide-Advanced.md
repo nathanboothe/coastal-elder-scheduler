@@ -12,7 +12,7 @@ The scheduling app has two audience-facing parts:
 - **Public booking wizard** (`/`) — where new members, after completing the WAC (We Are Coastal) membership class, book a meeting with an elder.
 - **Management area** (`/manage`) — PIN-gated, used by elders and admins to manage availability and view appointments.
 
-The elder list is not maintained by hand. It's synced from Coastal's Microsoft 365 directory (Entra ID), specifically from a security/M365 group called **ElderConnect**. This is the piece this guide focuses on.
+The elder list is not maintained by hand. It's synced from Coastal's Microsoft 365 directory (Entra ID), specifically from three mail-enabled security groups — **Elder Group 1**, **Elder Group 2**, and **Elder Group 3** (one per elder type at Coastal). This is the piece this guide focuses on.
 
 ---
 
@@ -20,12 +20,13 @@ The elder list is not maintained by hand. It's synced from Coastal's Microsoft 3
 
 ### What it does
 
-The **"Refresh from M365"** button, available in the management area, synchronizes the Elders list against the `ElderConnect` group in Microsoft 365:
+The **"Refresh from M365"** button, available in the management area, synchronizes the Elders list against the combined membership of all three elder groups in Microsoft 365:
 
-- **Adds** any new members of the `ElderConnect` group as new elder records.
-- **Marks removed members Inactive** rather than deleting them — this preserves their appointment history.
+- **Adds** any new members of any of the three groups as new elder records.
+- **Marks removed members Inactive** rather than deleting them — this preserves their appointment history. "Removed" means no longer in *any* of the three groups.
 - **Cancels any future appointments** that were orphaned because the elder was removed.
 - **Emails a summary report** of what changed to the designated OME (Office of Ministry Engagement) address.
+- **Flags anyone found in more than one of the three groups.** Elders are expected to belong to exactly one group; if someone is in two or more, the sync uses the first group's data for their record and reports the overlap in the email so it can be corrected in M365.
 
 ### Where elder data comes from
 
@@ -35,7 +36,7 @@ The **"Refresh from M365"** button, available in the management area, synchroniz
 ### When to run it
 
 Run "Refresh from M365" after:
-- Someone is added to or removed from the `ElderConnect` group in Microsoft 365
+- Someone is added to or removed from any of the three elder groups in Microsoft 365
 - An elder's department (campus) changes
 - You're troubleshooting why an elder isn't showing up correctly
 
@@ -43,7 +44,7 @@ It's a manual button — nothing runs this automatically on a schedule.
 
 ### Reading the email report
 
-After a sync, an email report goes to the OME address summarizing what was added, marked inactive, and any appointments canceled as a result. Review it after every sync to confirm the changes match what you expected (e.g., confirm nobody was unexpectedly marked inactive).
+After a sync, an email report goes to the OME address summarizing what was added, marked inactive, and any appointments canceled as a result — plus, if it happens, anyone found in more than one elder group. Review it after every sync to confirm the changes match what you expected (e.g., confirm nobody was unexpectedly marked inactive, and follow up on any duplicate-group notices).
 
 ---
 
@@ -64,7 +65,7 @@ If the sync stops working entirely, check these first:
 
 1. **App registration is in the correct tenant.** The Entra app registration must target Coastal Church's actual business M365 tenant — not a personal Microsoft account's Default Directory. Signing in against the wrong tenant produces an **AADSTS700016** error, which is the diagnostic signal for this specific mistake.
 2. **API permissions:** the app registration needs `User.Read.All` and `GroupMember.Read.All`, both as **Application** permissions (not Delegated), with **admin consent granted** by someone with Global Admin or Application Admin rights in that tenant.
-3. **Credentials location:** the Client ID, Client Secret, and Tenant ID live as environment variables in Render (`GRAPH_CLIENT_ID`, `GRAPH_CLIENT_SECRET`, `GRAPH_TENANT_ID`) — never in the code repository. `GRAPH_SEND_AS_MAILBOX` and `OME_EMAIL` have hardcoded fallbacks in `config.js`, but should also be set as env vars where possible.
+3. **Credentials location:** the Client ID, Client Secret, and Tenant ID live as environment variables in Render (`GRAPH_CLIENT_ID`, `GRAPH_CLIENT_SECRET`, `GRAPH_TENANT_ID`) — never in the code repository. `GRAPH_SEND_AS_MAILBOX`, `OME_EMAIL`, and `GRAPH_ELDER_GROUP_NAME_1`/`_2`/`_3` (the three elder group display names) have fallback defaults in `config.js`, but should also be set as env vars where possible so a group rename in M365 doesn't require a code change.
 
 > **Security note:** Credentials must never be committed to the GitHub repo, even temporarily. If this ever happens, rotate the exposed credentials immediately and remove them from the repo history — don't just delete the file going forward.
 

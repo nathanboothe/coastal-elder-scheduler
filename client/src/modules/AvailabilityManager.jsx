@@ -221,8 +221,8 @@ export default function AvailabilityManager() {
       <section className="manager-section">
         <h2>Elder roster (M365)</h2>
         <p className="empty-message">
-          Syncs elders from the ElderConnect group. Elders added manually (like Demo) aren't
-          affected.
+          Syncs elders from Coastal's three elder groups in M365. Elders added manually (like
+          Demo) aren't affected.
         </p>
         <button type="button" onClick={refreshFromM365} disabled={syncLoading}>
           {syncLoading ? 'Refreshing…' : 'Refresh from M365'}
@@ -250,6 +250,12 @@ export default function AvailabilityManager() {
               <div>
                 📧 {syncSummary.cancelledAppointments.length} future appointment(s) were cancelled
                 and reported to the OME email.
+              </div>
+            )}
+            {syncSummary.duplicates && syncSummary.duplicates.length > 0 && (
+              <div>
+                ⚠️ {syncSummary.duplicates.length} elder(s) found in more than one elder group —
+                reported to the OME email for cleanup in M365.
               </div>
             )}
           </div>

@@ -18,6 +18,12 @@ services:
         sync: false
       - key: GRAPH_SEND_AS_MAILBOX
         value: scheduling@gocoastal.org
+      - key: GRAPH_ELDER_GROUP_NAME_1
+        value: Elder Group 1
+      - key: GRAPH_ELDER_GROUP_NAME_2
+        value: Elder Group 2
+      - key: GRAPH_ELDER_GROUP_NAME_3
+        value: Elder Group 3
       - key: OME_EMAIL
         value: engagement@gocoastal.org
 # "sync: false" values are secrets - Render will prompt you to enter them

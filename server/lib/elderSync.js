@@ -1,14 +1,18 @@
 // lib/elderSync.js
 // Manual "Refresh from M365" sync, triggered by an admin button on
 // /manage (no polling/scheduled job — see routes/elderScheduling.js for
-// the endpoint). Diffs the ElderConnect group's membership (via
-// lib/graphDirectory.js) against Elder records this sync previously
-// created, and:
-//   - adds elders newly present in the group
+// the endpoint). Diffs the COMBINED membership of Coastal's three elder
+// groups (via lib/graphDirectory.js) against Elder records this sync
+// previously created, and:
+//   - adds elders newly present in any of the three groups
 //   - updates name/email/phone/campus for elders already synced
-//   - marks elders no longer in the group as Inactive (kept, not deleted,
-//     for appointment history) and cancels any future appointments they
-//     still have, reporting those cancellations to the OME email
+//   - marks elders no longer in any of the three groups as Inactive (kept,
+//     not deleted, for appointment history) and cancels any future
+//     appointments they still have, reporting those cancellations to the
+//     OME email
+//   - reports (also to the OME email) anyone found in more than one of the
+//     three groups — not expected to happen, so it's flagged rather than
+//     silently resolved
 //
 // Elders with Source = 'Manual' (e.g. the Demo elder, and the original
 // 30-person roster) are never touched by this — only records this sync
@@ -70,7 +74,7 @@ async function cancelFutureAppointments(elderName) {
  * suitable for rendering on the admin screen.
  */
 async function refreshFromM365() {
-  const [groupMembers, validCampuses, syncedElders] = await Promise.all([
+  const [{ members: groupMembers, duplicates }, validCampuses, syncedElders] = await Promise.all([
     getElderGroupMembers(),
     getValidCampusNames(),
     getPreviouslySyncedElders(),
@@ -152,22 +156,43 @@ async function refreshFromM365() {
     await updateRecords(config.airtable.tables.elders, toUpdate);
   }
 
+  // Build one combined report email covering anything an admin should
+  // look at — cancelled appointments and/or cross-group duplicate
+  // memberships — rather than a separate email per issue type.
+  const reportSections = [];
+
   if (cancelledAppointments.length > 0) {
     const lines = cancelledAppointments
       .map(
         (a) =>
-          `- ${a.elderName} was removed from the ElderConnect group but had a future appointment: ` +
+          `- ${a.elderName} was removed from the elder roster in M365 but had a future appointment: ` +
           `${a.memberName} (${a.memberEmail}) at ${a.campus} on ${a.date} ${a.timeSlot}. This appointment has been cancelled.`
       )
       .join('\n');
+    reportSections.push(
+      `CANCELLED APPOINTMENTS (elder no longer in any of the three elder groups):\n${lines}`
+    );
+  }
 
+  if (duplicates.length > 0) {
+    const lines = duplicates
+      .map((d) => `- ${d.name} (${d.objectId}) is in more than one elder group: ${d.groups.join(', ')}.`)
+      .join('\n');
+    reportSections.push(
+      `DUPLICATE GROUP MEMBERSHIP (should be in exactly one of the three elder groups — ` +
+        `the first group listed is the one that was used for their record; please fix ` +
+        `their M365 group membership so this doesn't recur):\n${lines}`
+    );
+  }
+
+  if (reportSections.length > 0) {
     try {
       await mail.sendMail({
         to: config.notifications.omeEmail,
-        subject: 'Elder sync: future appointments cancelled',
+        subject: 'Elder sync report: items need attention',
         body:
-          `An M365 elder-roster refresh removed one or more elders who still had upcoming ` +
-          `appointments. These have been cancelled and need manual follow-up:\n\n${lines}`,
+          `The "Refresh from M365" elder sync found the following that need manual follow-up:\n\n` +
+          reportSections.join('\n\n'),
       });
     } catch (emailErr) {
       // Don't fail the whole sync just because the report email didn't go
@@ -183,6 +208,7 @@ async function refreshFromM365() {
     deactivated,
     skipped,
     cancelledAppointments,
+    duplicates,
   };
 }
 

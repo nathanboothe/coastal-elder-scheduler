@@ -53,7 +53,7 @@ This is the one with no shortcut — the MCP/API tooling used to build this proj
    - `AIRTABLE_API_KEY`, `AIRTABLE_BASE_ID` (from §2)
    - `GRAPH_TENANT_ID`, `GRAPH_CLIENT_ID`, `GRAPH_CLIENT_SECRET` (from §4 — will be entirely new values)
    - `GRAPH_SEND_AS_MAILBOX` (should become `scheduling@gocoastal.org` for real, once that mailbox exists in Coastal's own tenant)
-   - `GRAPH_ELDER_GROUP_NAME` (the group name in Coastal's tenant — may or may not still be called `ElderConnect`, church's call)
+   - `GRAPH_ELDER_GROUP_NAME_1`, `GRAPH_ELDER_GROUP_NAME_2`, `GRAPH_ELDER_GROUP_NAME_3` (the three elder group display names in Coastal's tenant — currently "Elder Group 1/2/3"; church's call if these should be renamed)
    - `OME_EMAIL` (confirm `engagement@gocoastal.org` is still correct)
    - `MANAGE_PIN`, `MANAGE_SESSION_SECRET`, `SCHEDULER_PIN`, `SCHEDULER_SESSION_SECRET` — **generate fresh values**, don't copy these over from the current deployment
 4. Point the custom domain (see §5) at the new service's hostname.
@@ -69,13 +69,13 @@ Everything here currently lives in **TechFoundry360's tenant** as a demo/proof-o
 2. Grant these **Application permissions** (not delegated) and get **admin consent**:
    - `Mail.Send` — for booking confirmation emails
    - `User.Read.All` — for the elder-profile sync (name, email, phone, department)
-   - `GroupMember.Read.All` — for reading the elder group's membership
+   - `GroupMember.Read.All` — for reading each elder group's membership
 3. Generate a **client secret** for the new registration (note its expiration date — client secrets expire, unlike certificates; put a reminder somewhere for renewal).
 4. Create/confirm the **shared mailbox** `scheduling@gocoastal.org` exists in Exchange Online, and — as a least-privilege step — scope the `Mail.Send` permission to just that mailbox via an Exchange **application access policy**, rather than leaving it able to send as any mailbox in the tenant.
-5. Create the **elder group** in Coastal's tenant (mirroring `ElderConnect` from the demo tenant), and add real elders to it. Decide: does the group's `department` field (or equivalent) map cleanly to the 8 real campus names (Battery Park, Bethany Campus, Chesapeake, Gloucester, Hampton, Mathews, Williamsburg, Yorktown)? If Coastal's directory doesn't already tag people by campus, that data will need to be entered as part of standing up each elder's profile.
+5. Create the **three elder groups** in Coastal's tenant (mirroring "Elder Group 1/2/3" from the demo tenant — one per elder type), and add real elders to each. No elder should belong to more than one of the three groups. Decide: does each group member's `department` field (or equivalent) map cleanly to the 8 real campus names (Battery Park, Bethany Campus, Chesapeake, Gloucester, Hampton, Mathews, Williamsburg, Yorktown)? If Coastal's directory doesn't already tag people by campus, that data will need to be entered as part of standing up each elder's profile.
 6. Update Render env vars `GRAPH_TENANT_ID`, `GRAPH_CLIENT_ID`, `GRAPH_CLIENT_SECRET` to the new registration's values.
-7. Run a test: click "Refresh from M365" on `/manage` and confirm elders sync in correctly, and send a test booking to confirm `Mail.Send` works end-to-end.
-8. Once verified, the TechFoundry360 app registration and `ElderConnect` group can be deleted — they were only ever a demo scaffold.
+7. Run a test: click "Refresh from M365" on `/manage` and confirm elders sync in correctly from all three groups, and send a test booking to confirm `Mail.Send` works end-to-end.
+8. Once verified, the TechFoundry360 app registration and its three demo elder groups can be deleted — they were only ever a demo scaffold.
 
 ---
 
